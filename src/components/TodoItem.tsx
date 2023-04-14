@@ -18,9 +18,11 @@ const TodoItem: FC<Props> = (todo: Todo) => {
                         'border-violet-400': !isCompleted
                     }
                 )
-            }>
+            }
+            onClick={() => setIsCompleted(!isCompleted)}
+        >
             <div className='flex w-10'>
-                <input type='checkbox' className='w-full border-1 border-gray-300' checked={isCompleted} onChange={() => setIsCompleted(!isCompleted)}></input>
+                <input type='checkbox' className='w-full border-1 border-gray-300' checked={isCompleted} onChange={() => setIsCompleted(!isCompleted)}/>
             </div>
             <div className='flex flex-col w-full ml-5 text-left'>
                 <h3 className={cx('text-gray-900 font-bold', { 'line-through': isCompleted})}>
