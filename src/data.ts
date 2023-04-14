@@ -37,5 +37,9 @@ export const normalizeTodoList = (list: TodoFromApi[]): Todo[] => {
     completed: todo.completed,
     createdAt: todo.created_at,
     updatedAt: todo.updated_at
-  }))
+  })).sort((a: Todo, b: Todo) => {
+    const dateA = new Date(a.createdAt)
+    const dateB = new Date(b.createdAt)
+    return dateB - dateA
+  })
 }

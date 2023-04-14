@@ -15,7 +15,7 @@ const TodoDetails: FC = () => {
   if (selected.id === 0) {
     return (
       <div className='border-2 border-violet-400 w-full h-full rounded-2xl p-5 lg:w-min-1/2 flex flex-col justify-center items-center'>
-        <p className='text-gray-500 text-xl'>Select a note to show it's details!</p>
+        <p className='text-gray-500 text-xl'>Select a note to show it&apos;s details!</p>
       </div>
     )
   }
