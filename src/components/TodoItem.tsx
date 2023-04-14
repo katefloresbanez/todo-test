@@ -20,17 +20,19 @@ const TodoItem: FC<Props> = ({ todo }) => {
     dispatch({ type: selectTodo.type, payload: currentTodo })
   }
 
+  const isSelected = selected.id === todo.id
+
   return (
         <div
             className={
                 cx('flex border-2 p-3 rounded-md mb-3 cursor-pointer overflow-hidden',
                   {
-                    'bg-gray-300': isCompleted,
+                    'bg-white': !isCompleted && !isSelected,
+                    'border-gray-400': !isCompleted && !isSelected,
                     'border-gray-500': isCompleted,
-                    'border-gray-400': !isCompleted,
-                    'border-violet-400': !isCompleted && selected.id === todo.id,
-                    'bg-violet-200': !isCompleted && selected.id === todo.id,
-                    'bg-white': !isCompleted
+                    'bg-gray-300': isCompleted,
+                    'bg-violet-200': !isCompleted && isSelected,
+                    'border-violet-400': !isCompleted && isSelected
                   }
                 )
             }

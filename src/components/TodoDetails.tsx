@@ -12,6 +12,14 @@ const TodoDetails: FC = () => {
     setEditing(!isEditing)
   }
 
+  if (selected.id === 0) {
+    return (
+      <div className='border-2 border-violet-400 w-full h-full rounded-2xl p-5 lg:w-min-1/2 flex flex-col justify-center items-center'>
+        <p className='text-gray-500 text-xl'>Select a note to show it's details!</p>
+      </div>
+    )
+  }
+
   return (
         <div className='border-2 border-violet-400 w-full h-full rounded-2xl p-5 lg:w-min-1/2 flex flex-col'>
             <div className='flex justify-end'>
@@ -38,7 +46,7 @@ const TodoDetails: FC = () => {
                     }
                     {isEditing
                       ? (
-                        <textarea className='sm:text:xm lg:text-md resize-none pb-0' rows={11} cols={38} defaultValue={selected.description} name='todo-description'/>
+                        <textarea className='sm:text:xm lg:text-md resize-none pb-0' rows={10} cols={38} defaultValue={selected.description} name='todo-description'/>
                         )
                       : (
                             <p className='sm:text:xm lg:text-md'>{selected.description}</p>
