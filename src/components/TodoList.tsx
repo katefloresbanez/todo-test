@@ -1,22 +1,20 @@
-import { FC } from 'react'
-import { Todo } from '../types'
+import type { FC } from 'react'
+import type { Todo } from '../types'
 
 import TodoItem from './TodoItem'
+import { getTodoList } from '../state/todoReducer'
+import { useAppSelector } from '../hooks'
 
-type Props = {
-    list: Array<Todo>
-}
+const TodoList: FC = () => {
+  const list = useAppSelector(getTodoList)
 
-const TodoList: FC<Props> = ({ list }) => {
-    return (
-        <div className=''>
-            <div className='border-3 border-dashed border-gray-300'>Ongoing</div>
+  return (
+        <div className='pt-4 pr-4 flex flex-col overflow-scroll'>
             {
-                list.map((todo: Todo) => <TodoItem key={todo.id} {...todo} />)
+                list.map((todo: Todo) => <TodoItem key={todo.id} todo={todo} />)
             }
-            <div className='border-3 border-dashed border-gray-300'>Completed</div>
         </div>
-    )
+  )
 }
 
 export default TodoList

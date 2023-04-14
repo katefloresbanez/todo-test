@@ -1,40 +1,55 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
+import type { FC } from 'react'
 import cx from 'classnames'
 
-import { Todo } from '../types'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import type { Todo } from '../types'
+import { selectTodo, getSelectedTodo } from '../state/todoReducer'
 
-type Props = Todo
+interface Props {
+  todo: Todo
+}
 
-const TodoItem: FC<Props> = (todo: Todo) => {
-    const [isCompleted, setIsCompleted] = useState(todo.completed)
+const TodoItem: FC<Props> = ({ todo }) => {
+  const [isCompleted, setIsCompleted] = useState(todo.completed)
+  const selected = useAppSelector(getSelectedTodo)
+  const dispatch = useAppDispatch()
 
-    return (
-        <div 
+  const onClickTodo = (currentTodo: Todo): void => {
+    // navigate(`/todo/${todo.id}`)
+    dispatch({ type: selectTodo.type, payload: currentTodo })
+  }
+
+  return (
+        <div
             className={
-                cx('flex border-2 p-4 rounded-md mb-3',
-                    { 
-                        'bg-gray-300': isCompleted,
-                        'border-gray-400': isCompleted ,
-                        'border-violet-400': !isCompleted
-                    }
+                cx('flex border-2 p-3 rounded-md mb-3 cursor-pointer overflow-hidden',
+                  {
+                    'bg-gray-300': isCompleted,
+                    'border-gray-500': isCompleted,
+                    'border-gray-400': !isCompleted,
+                    'border-violet-400': !isCompleted && selected.id === todo.id,
+                    'bg-violet-200': !isCompleted && selected.id === todo.id,
+                    'bg-white': !isCompleted
+                  }
                 )
             }
-            onClick={() => setIsCompleted(!isCompleted)}
+            onClick={() => { onClickTodo(todo) }}
         >
             <div className='flex w-10'>
-                <input type='checkbox' className='w-full border-1 border-gray-300' checked={isCompleted} onChange={() => setIsCompleted(!isCompleted)}/>
+                <input type='checkbox' className='w-full border-1 border-gray-300' checked={isCompleted} onChange={() => { setIsCompleted(!isCompleted) }}/>
             </div>
-            <div className='flex flex-col w-full ml-5 text-left'>
-                <h3 className={cx('text-gray-900 font-bold', { 'line-through': isCompleted})}>
+            <div className='flex flex-col w-3/4 ml-5 text-left'>
+                <h3 className={cx('text-gray-900 font-bold', { 'line-through': isCompleted })}>
                     {todo.title}
                 </h3>
-                <p className={cx('text-gray-800', { 'line-through': isCompleted})}>
+                <p className={cx('text-gray-800 overflow-hidden overflow-ellipsis whitespace-nowrap', { 'line-through': isCompleted })}>
                     {todo.description}
                 </p>
-                <p className='text-gray-400 text-right text-sm'>{todo.created_at}</p>
+                <p className='text-gray-400 text-right text-sm'>{todo.createdAt}</p>
             </div>
         </div>
-    )
+  )
 }
 
 export default TodoItem
