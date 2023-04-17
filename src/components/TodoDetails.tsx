@@ -1,15 +1,32 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import cx from 'classnames'
-import { getSelectedTodo } from '../state/todoReducer'
-import { useAppSelector } from '../hooks'
+import { useForm } from 'react-hook-form'
+
+import { getSelectedTodo, editTodo } from '../state/todoReducer'
+import { useAppDispatch, useAppSelector } from '../hooks'
+
+interface TodoFormValues {
+  title: string
+  description: string
+}
+
+const date = new Date()
 
 const TodoDetails: FC = () => {
   const selected = useAppSelector(getSelectedTodo)
+  const dispatch = useAppDispatch()
   const [isEditing, setEditing] = useState(false)
+  const { register, handleSubmit } = useForm()
 
-  const onSave = (): void => {
+  const onSave = (data: TodoFormValues): void => {
+    const editedPayload = {
+      ...selected,
+      ...data,
+      updatedAt: date.toDateString()
+    }
     setEditing(!isEditing)
+    dispatch({ type: editTodo.type, payload: editedPayload })
   }
 
   if (selected.id === 0) {
@@ -34,11 +51,12 @@ const TodoDetails: FC = () => {
                     {isEditing ? 'X' : 'Edit'}
                 </button>
             </div>
-            <form>
+            {/* @ts-expect-error bug with react-hook-form and typescript */}
+            <form onSubmit={handleSubmit(onSave)}>
                 <div className='h-full'>
                     {isEditing
                       ? (
-                        <input className='text-bold sm:text-sm md:text-xl w-full' defaultValue={selected.title} name='todo-title'/>
+                        <input {...register('title')} className='text-bold sm:text-sm md:text-xl w-full' defaultValue={selected.title} />
                         )
                       : (
                             <h1 className='text-bold sm:text-sm md:text-xl w-full'>{selected.title}</h1>
@@ -46,14 +64,14 @@ const TodoDetails: FC = () => {
                     }
                     {isEditing
                       ? (
-                        <textarea className='sm:text:xm lg:text-md resize-none pb-0' rows={10} cols={38} defaultValue={selected.description} name='todo-description'/>
+                        <textarea {...register('description')}className='sm:text:xm lg:text-md resize-none pb-0' rows={10} cols={38} defaultValue={selected.description} />
                         )
                       : (
                             <p className='sm:text:xm lg:text-md'>{selected.description}</p>
                         )
                     }
                 </div>
-                {isEditing && <button className='rounded-md bg-violet-500 w-full h-10 text-white' onClick={() => { onSave() }}>Save</button> }
+                {isEditing && <button type='submit' className='rounded-md bg-violet-500 w-full h-10 text-white'>Save</button> }
              </form>
         </div>
   )

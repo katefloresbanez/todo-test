@@ -22,6 +22,7 @@ const initialState: TodoState = {
   },
   modalStatus: false
 }
+
 export const todoSlice = createSlice({
   name: 'todo',
   initialState,
@@ -30,6 +31,16 @@ export const todoSlice = createSlice({
       state.list.push(action.payload)
     },
     selectTodo: (state, action: PayloadAction<Todo>) => {
+      state.selected = action.payload
+    },
+    editTodo: (state, action: PayloadAction<Todo>) => {
+      state.list.map(todo => {
+        if (todo.id === action.payload.id) {
+          return action.payload
+        } else {
+          return todo
+        }
+      })
       state.selected = action.payload
     },
     toggleAddModal: (state, action: PayloadAction<boolean>) => {
@@ -44,7 +55,7 @@ export const getSelectedTodo = (state: RootState): Todo => state.todolist.select
 export const getModalStatus = (state: RootState): boolean => state.todolist.modalStatus
 
 // Actions
-export const { addTodo, selectTodo, toggleAddModal } = todoSlice.actions
+export const { addTodo, selectTodo, toggleAddModal, editTodo } = todoSlice.actions
 
 // Reducer
 export default todoSlice.reducer
