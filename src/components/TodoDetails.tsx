@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 
 import { getSelectedTodo, editTodo } from '../state/todoReducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
+import type { Todo } from '../types'
 
 interface TodoFormValues {
   title: string
@@ -20,10 +21,10 @@ const TodoDetails: FC = () => {
   const { register, handleSubmit } = useForm()
 
   const onSave = (data: TodoFormValues): void => {
-    const editedPayload = {
+    const editedPayload: Todo = {
       ...selected,
       ...data,
-      updatedAt: date.toDateString()
+      updatedAt: date.toUTCString()
     }
     setEditing(!isEditing)
     dispatch({ type: editTodo.type, payload: editedPayload })

@@ -24,10 +24,8 @@ module.exports = {
   rules: {
     'typescript-eslint/explicit-function-return-type': 0,
     'react/react-in-jsx-scope': 0,
-    '@typescript-eslint/no-misused-promises': [2, {
-      'checksVoidReturn': {
-        'attributes': false
-      }
+    '@typescript-eslint/no-misused-promises': ['error', {
+      'checksVoidReturn': false
      }]
   },
   settings: {

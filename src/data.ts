@@ -1,6 +1,6 @@
 import { type TodoFromApi, type Todo } from './types'
 
-const date = new Date()
+const newDate = (date: string): string => new Date(date).toUTCString()
 
 export const mockTodoList = [
   {
@@ -8,7 +8,7 @@ export const mockTodoList = [
     title: 'Test Todo 1',
     description: 'something something something something something something something something',
     completed: false,
-    created_at: date.toDateString(),
+    created_at: newDate('2022-10-20'),
     updated_at: ''
   },
   {
@@ -16,7 +16,7 @@ export const mockTodoList = [
     title: 'Test Todo 2',
     description: 'something something',
     completed: false,
-    created_at: date.toDateString(),
+    created_at: newDate('2022-01-30'),
     updated_at: ''
   },
   {
@@ -24,7 +24,7 @@ export const mockTodoList = [
     title: 'Test Todo 3',
     description: 'something something',
     completed: false,
-    created_at: date.toDateString(),
+    created_at: newDate('2023-04-03'),
     updated_at: ''
   }
 ]
@@ -38,8 +38,8 @@ export const normalizeTodoList = (list: TodoFromApi[]): Todo[] => {
     createdAt: todo.created_at,
     updatedAt: todo.updated_at
   })).sort((a: Todo, b: Todo) => {
-    const dateA = new Date(a.createdAt)
-    const dateB = new Date(b.createdAt)
+    const dateA = Date.parse(a.createdAt)
+    const dateB = Date.parse(b.createdAt)
     return dateB - dateA
   })
 }
