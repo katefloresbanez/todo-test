@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { useState } from 'react'
 import cx from 'classnames'
 import { useForm } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
 
 import { getSelectedTodo, editTodo } from '../state/todoReducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
@@ -18,9 +19,10 @@ const TodoDetails: FC = () => {
   const selected = useAppSelector(getSelectedTodo)
   const dispatch = useAppDispatch()
   const [isEditing, setEditing] = useState(false)
-  const { register, handleSubmit } = useForm()
 
-  const onSave = (data: TodoFormValues): void => {
+  const { register, handleSubmit } = useForm<TodoFormValues>()
+
+  const onSave: SubmitHandler<TodoFormValues> = (data: TodoFormValues): void => {
     const editedPayload: Todo = {
       ...selected,
       ...data,
@@ -52,7 +54,6 @@ const TodoDetails: FC = () => {
                     {isEditing ? 'X' : 'Edit'}
                 </button>
             </div>
-            {/* @ts-expect-error bug with react-hook-form and typescript */}
             <form onSubmit={handleSubmit(onSave)}>
                 <div className='h-full'>
                     {isEditing
